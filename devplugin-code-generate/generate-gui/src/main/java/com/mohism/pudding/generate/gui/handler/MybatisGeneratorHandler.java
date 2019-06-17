@@ -204,15 +204,15 @@ public class MybatisGeneratorHandler {
             if (DbType.MySQL.name().equals(dbType) || DbType.MySQL_8.name().equals(dbType)
 		            || DbType.PostgreSQL.name().equals(dbType)) {
                 PluginConfiguration pluginConfiguration = new PluginConfiguration();
-                pluginConfiguration.addProperty("type", "com.zzg.mybatis.generator.plugins.MySQLLimitPlugin");
-                pluginConfiguration.setConfigurationType("com.zzg.mybatis.generator.plugins.MySQLLimitPlugin");
+                pluginConfiguration.addProperty("type", "com.mohism.pudding.generate.gui.plugins.MySQLLimitPlugin");
+                pluginConfiguration.setConfigurationType("com.mohism.pudding.generate.gui.plugins.MySQLLimitPlugin");
                 context.addPluginConfiguration(pluginConfiguration);
             }
         }
         //for JSR310
         if (generatorConfig.isJsr310Support()) {
             JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();
-            javaTypeResolverConfiguration.setConfigurationType("com.zzg.mybatis.generator.plugins.JavaTypeResolverJsr310Impl");
+            javaTypeResolverConfiguration.setConfigurationType("com.mohism.pudding.generate.gui.plugins.JavaTypeResolverJsr310Impl");
             context.setJavaTypeResolverConfiguration(javaTypeResolverConfiguration);
         }
         //forUpdate 插件
@@ -220,8 +220,8 @@ public class MybatisGeneratorHandler {
             if (DbType.MySQL.name().equals(dbType)
                     || DbType.PostgreSQL.name().equals(dbType)) {
                 PluginConfiguration pluginConfiguration = new PluginConfiguration();
-                pluginConfiguration.addProperty("type", "com.zzg.mybatis.generator.plugins.MySQLForUpdatePlugin");
-                pluginConfiguration.setConfigurationType("com.zzg.mybatis.generator.plugins.MySQLForUpdatePlugin");
+                pluginConfiguration.addProperty("type", "com.mohism.pudding.generate.gui.plugins.MySQLForUpdatePlugin");
+                pluginConfiguration.setConfigurationType("com.mohism.pudding.generate.gui.plugins.MySQLForUpdatePlugin");
                 context.addPluginConfiguration(pluginConfiguration);
             }
         }
@@ -230,8 +230,8 @@ public class MybatisGeneratorHandler {
             if (DbType.MySQL.name().equals(dbType) || DbType.MySQL_8.name().equals(dbType)
                     || DbType.PostgreSQL.name().equals(dbType)) {
                 PluginConfiguration pluginConfiguration = new PluginConfiguration();
-                pluginConfiguration.addProperty("type", "com.zzg.mybatis.generator.plugins.RepositoryPlugin");
-                pluginConfiguration.setConfigurationType("com.zzg.mybatis.generator.plugins.RepositoryPlugin");
+                pluginConfiguration.addProperty("type", "com.mohism.pudding.generate.gui.plugins.RepositoryPlugin");
+                pluginConfiguration.setConfigurationType("com.mohism.pudding.generate.gui.plugins.RepositoryPlugin");
                 context.addPluginConfiguration(pluginConfiguration);
             }
         }
@@ -240,8 +240,8 @@ public class MybatisGeneratorHandler {
                     || DbType.PostgreSQL.name().equals(dbType)) {
                 PluginConfiguration pluginConfiguration = new PluginConfiguration();
 				pluginConfiguration.addProperty("useExample", String.valueOf(generatorConfig.isUseExample()));
-				pluginConfiguration.addProperty("type", "com.zzg.mybatis.generator.plugins.CommonDAOInterfacePlugin");
-                pluginConfiguration.setConfigurationType("com.zzg.mybatis.generator.plugins.CommonDAOInterfacePlugin");
+				pluginConfiguration.addProperty("type", "com.mohism.pudding.generate.gui.plugins.CommonDAOInterfacePlugin");
+                pluginConfiguration.setConfigurationType("com.mohism.pudding.generate.gui.plugins.CommonDAOInterfacePlugin");
                 context.addPluginConfiguration(pluginConfiguration);
             }
         }

@@ -33,7 +33,6 @@ public class GenerateApplication extends Application {
 		MainUIController controller = fxmlLoader.getController();
 		controller.setPrimaryStage(primaryStage);
 	}
-
 	public static void main(String[] args) {
 		launch(args);
 	}

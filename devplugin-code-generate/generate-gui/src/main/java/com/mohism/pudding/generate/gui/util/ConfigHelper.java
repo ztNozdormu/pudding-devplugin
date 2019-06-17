@@ -229,12 +229,14 @@ public class ConfigHelper {
 	public static List<String> getAllJDBCDriverJarPaths() {
 		List<String> jarFilePathList = new ArrayList<>();
 		URL url = Thread.currentThread().getContextClassLoader().getResource("logback.xml");
+		String filePath = ConfigHelper.class.getResource("/lib/").getPath();
 		try {
 			File file;
 			if (url.getPath().contains(".jar")) {
 				file = new File("lib/");
 			} else {
-				file = new File("src/main/resources/lib");
+//				file = new File("src/main/resources/lib");
+				file = new File(filePath);
 			}
 			_LOG.info("jar lib path: {}", file.getCanonicalPath());
 			File[] jarFiles = file.listFiles();
