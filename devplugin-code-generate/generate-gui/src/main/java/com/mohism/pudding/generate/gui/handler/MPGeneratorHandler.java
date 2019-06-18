@@ -1,6 +1,5 @@
 package com.mohism.pudding.generate.gui.handler;
 
-import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
@@ -8,11 +7,17 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import org.apache.commons.lang3.StringUtils;
+import com.mohism.pudding.generate.gui.config.DatabaseConfig;
+import com.mohism.pudding.generate.gui.engine.BeetlTemplateEngine;
+import com.mohism.pudding.generate.gui.model.DbType;
+import com.mohism.pudding.generate.gui.model.GeneratorConfig;
+import com.mohism.pudding.generate.gui.util.DbUtil;
+import org.mybatis.generator.api.ProgressCallback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * @ 创建人 zt
@@ -21,51 +26,57 @@ import java.util.Scanner;
  */
 public class MPGeneratorHandler {
 
-    /**
-     * <p>
-     * 读取控制台内容
-     * </p>
-     */
-    public static String scanner(String tip) {
-        Scanner scanner = new Scanner(System.in);
-        StringBuilder help = new StringBuilder();
-        help.append("请输入" + tip + "：");
-        System.out.println(help.toString());
-        if (scanner.hasNext()) {
-            String ipt = scanner.next();
-            if (StringUtils.isNotEmpty(ipt)) {
-                return ipt;
-            }
-        }
-        throw new MybatisPlusException("请输入正确的" + tip + "！");
+    private static final Logger _LOG = LoggerFactory.getLogger(MPGeneratorHandler.class);
+
+    private GeneratorConfig generatorConfig;
+
+    private  DatabaseConfig selectedDatabaseConfig;
+
+    private ProgressCallback progressCallback;
+
+    public MPGeneratorHandler() {
+
     }
 
-    public static void main(String[] args) {
+    public void setGeneratorConfig(GeneratorConfig generatorConfig) {
+        this.generatorConfig = generatorConfig;
+    }
+
+    public void setDatabaseConfig(DatabaseConfig databaseConfig) {
+        this.selectedDatabaseConfig = databaseConfig;
+    }
+
+    public void setProgressCallback(ProgressCallback progressCallback) {
+        this.progressCallback = progressCallback;
+    }
+
+    public void generate() throws Exception {
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir");
+        // 项目路径
+        String projectPath = generatorConfig.getProjectFolder();//rojectFolder//System.getProperty("D://code/");
         gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setAuthor("jobob");
+        gc.setAuthor("real earth");
         gc.setOpen(false);
         // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
-
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/hyc_health_knowledge?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        String dbType = selectedDatabaseConfig.getDbType();
+        dsc.setUrl(DbUtil.getConnectionUrlWithSchema(selectedDatabaseConfig));
         // dsc.setSchemaName("public");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("root");
+        dsc.setDriverName(DbType.valueOf(dbType).getDriverClass());
+        dsc.setUsername(selectedDatabaseConfig.getUsername());
+        dsc.setPassword(selectedDatabaseConfig.getPassword());
+        // 获取数据类型
         mpg.setDataSource(dsc);
-
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName(scanner("模块名"));
-        pc.setParent("com.baomidou.ant");
+        pc.setModuleName("mp");
+        pc.setParent("com.mohism.pudding");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -108,6 +119,7 @@ public class MPGeneratorHandler {
         // 配置模板
         TemplateConfig templateConfig = new TemplateConfig();
 
+
         // 配置自定义输出模板
         //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
         // templateConfig.setEntity("templates/entity2.java");
@@ -121,17 +133,18 @@ public class MPGeneratorHandler {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityClass("com.baomidou.ant.common.BaseEntity");
+        strategy.setSuperEntityClass("java.io.Serializable");
+//        strategy.setSuperEntityClass("com.baomidou.ant.common.BaseEntity");
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
-        strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
-        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
+        strategy.setSuperControllerClass("com.mohism.pudding.core.base.controller");
+        strategy.setInclude(generatorConfig.getTableName());//scanner("表名，多个英文逗号分割").split(",")
         strategy.setSuperEntityColumns("id");
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
-        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+//        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+        mpg.setTemplateEngine(new BeetlTemplateEngine());
         mpg.execute();
     }
-
 }
