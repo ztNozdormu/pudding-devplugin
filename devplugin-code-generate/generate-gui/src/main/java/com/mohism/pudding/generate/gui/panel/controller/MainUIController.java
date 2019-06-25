@@ -394,6 +394,70 @@ public class MainUIController extends BaseFXController {
             }
         }
     }
+    @FXML
+//    public void generateMpXCode() {
+//        if (tableName == null) {
+//            AlertUtil.showWarnAlert("请先在左侧选择数据库表");
+//            return;
+//        }
+//        String result = validateConfig();
+//        if (result != null) {
+//            AlertUtil.showErrorAlert(result);
+//            return;
+//        }
+//        GeneratorConfig generatorConfig = getGeneratorConfigFromUI();
+//        if (!checkDirs(generatorConfig)) {
+//            return;
+//        }
+//
+//        XbootMPGenerator bridge = new XbootMPGenerator();
+//        bridge.setGeneratorConfig(generatorConfig);
+//        bridge.setDatabaseConfig(selectedDatabaseConfig);
+////        bridge.setIgnoredColumns(ignoredColumns);
+////        bridge.setColumnOverrides(columnOverrides);
+//        UIProgressCallback alert = new UIProgressCallback(Alert.AlertType.INFORMATION);
+//        bridge.setProgressCallback(alert);
+//        alert.show();
+//        PictureProcessStateController pictureProcessStateController = null;
+//        try {
+//            //Engage PortForwarding
+//            Session sshSession = DbUtil.getSSHSession(selectedDatabaseConfig);
+//            DbUtil.engagePortForwarding(sshSession, selectedDatabaseConfig);
+//
+//            if (sshSession != null) {
+//                pictureProcessStateController = new PictureProcessStateController();
+//                pictureProcessStateController.setDialogStage(getDialogStage());
+//                pictureProcessStateController.startPlay();
+//            }
+//
+//            bridge.generate();
+//
+//            if (pictureProcessStateController != null) {
+//                Task task = new Task<Void>() {
+//                    @Override
+//                    protected Void call() throws Exception {
+//                        Thread.sleep(3000);
+//                        return null;
+//                    }
+//                };
+//                PictureProcessStateController finalPictureProcessStateController = pictureProcessStateController;
+//                task.setOnSucceeded(event -> {
+//                    finalPictureProcessStateController.close();
+//                });
+//                task.setOnFailed(event -> {
+//                    finalPictureProcessStateController.close();
+//                });
+//                new Thread(task).start();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            AlertUtil.showErrorAlert(e.getMessage());
+//            if (pictureProcessStateController != null) {
+//                pictureProcessStateController.close();
+//                pictureProcessStateController.playFailState(e.getMessage(), true);
+//            }
+//        }
+//    }
 	private String validateConfig() {
 		String projectFolder = projectFolderField.getText();
 		if (StringUtils.isEmpty(projectFolder))  {

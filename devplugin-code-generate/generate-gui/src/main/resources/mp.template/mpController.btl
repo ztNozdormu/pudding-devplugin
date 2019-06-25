@@ -1,0 +1,76 @@
+package ${entity.controllerPackage};
+
+import cn.exrick.xboot.common.utils.PageUtil;
+import cn.exrick.xboot.common.utils.ResultUtil;
+import cn.exrick.xboot.common.vo.PageVo;
+import cn.exrick.xboot.common.vo.Result;
+import ${entity.entityPackage}.${entity.className};
+import ${entity.servicePackage}.I${entity.className}Service;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+/**
+ * @author ${entity.author}
+ */
+@Slf4j
+@RestController
+@Api(description = "${entity.description}管理接口")
+@RequestMapping("/pudding/${entity.classNameLowerCase}")
+@Transactional
+public class ${entity.className}Controller {
+
+    @Autowired
+    private I${entity.className}Service i${entity.className}Service;
+
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "通过id获取")
+    public ResponseData get(@PathVariable ${entity.primaryKeyType} id){
+
+        ${entity.className} ${entity.classNameLowerCase} = i${entity.className}Service.getById(id);
+        return ResponseData.success(${entity.classNameLowerCase});
+    }
+
+    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
+    @ApiOperation(value = "获取全部数据")
+    public ResponseData getAll(){
+
+        List<${entity.className}> list = i${entity.className}Service.list();
+        return ResponseData.success(list);
+    }
+
+    @RequestMapping(value = "/getByPage", method = RequestMethod.GET)
+    @ApiOperation(value = "分页获取")
+    public ResponseData getByPage(@ModelAttribute PageVo page){
+
+        IPage<${entity.className}> data = i${entity.className}Service.page(PageUtil.initMpPage(page));
+        return ResponseData.success(data);
+    }
+
+    @RequestMapping(value = "/insertOrUpdate", method = RequestMethod.POST)
+    @ApiOperation(value = "编辑或更新数据")
+    public ResponseData saveOrUpdate(@ModelAttribute ${entity.className} ${entity.classNameLowerCase}){
+
+        if(i${entity.className}Service.saveOrUpdate(${entity.classNameLowerCase})){
+            return ResponseData.success(${entity.classNameLowerCase});
+        }
+        return ResponseData.error("操作失败");
+    }
+
+    @RequestMapping(value = "/delByIds/{ids}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "批量通过id删除")
+    public ResponseData delAllByIds(@PathVariable ${entity.primaryKeyType}[] ids){
+
+        for(${entity.primaryKeyType} id : ids){
+            i${entity.className}Service.removeById(id);
+        }
+        return ResponseData.success("批量通过id删除数据成功");
+    }
+}

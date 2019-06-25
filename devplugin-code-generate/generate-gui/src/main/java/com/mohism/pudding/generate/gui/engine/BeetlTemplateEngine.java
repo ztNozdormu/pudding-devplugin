@@ -21,6 +21,7 @@ import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
+import org.beetl.core.resource.FileResourceLoader;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class BeetlTemplateEngine extends com.baomidou.mybatisplus.generator.engi
         super.init(configBuilder);
         try {
             Configuration cfg = Configuration.defaultConfiguration();
-            groupTemplate = new GroupTemplate(new ClasspathResourceLoader("/"), cfg);
+            groupTemplate = new GroupTemplate(new ClasspathResourceLoader("/templates/"), cfg);
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
@@ -50,6 +51,7 @@ public class BeetlTemplateEngine extends com.baomidou.mybatisplus.generator.engi
 
     @Override
     public void writer(Map<String, Object> objectMap, String templatePath, String outputFile) throws Exception {
+       System.out.println(templatePath);
         Template template = groupTemplate.getTemplate(templatePath);
         try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
             template.binding(objectMap);
