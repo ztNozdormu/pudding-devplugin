@@ -25,7 +25,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <pudding.version>0.0.1</pudding.version>
-    <fastjson.version>1.2.7</fastjson.version>
+    <fastjson.version>1.2.25</fastjson.version>
     <druid.version>1.1.12</druid.version>
     <lombok.versin>1.18.4</lombok.versin>
     <commons-lang3.versin>3.4</commons-lang3.versin>
